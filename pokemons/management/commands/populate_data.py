@@ -64,13 +64,12 @@ def load_cards():
         image = card["image"]
         creation_date = card["creation_date"]      
         creation_date = creation_date.replace("/","-")
-        rarity_obj = Rarity.objects.get(rarity_desc=rarity)
         
         card_obj = Card(card_name=pokemon_name,
                         card_hp=pokemon_hp,
                         card_is_first_edition=is_first_edition,
                         card_expansion=expansion,
-                        card_rarity=rarity_obj,
+                        card_rarity=rarity,
                         card_type=type,
                         card_price=price,
                         card_image=image,
@@ -89,10 +88,7 @@ class Command(BaseCommand):
     help = 'Populate data to the DB'
     
     def handle(self, *args, **kwargs):
-        # load_constants()
+        load_constants()
         load_cards()
 
     
-
-        
-## AGREGAR EXCEPCIONES POR REPETIDOS 
