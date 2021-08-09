@@ -20,7 +20,7 @@ class ExpansionSerializer(serializers.ModelSerializer):
 class CardSerializer(serializers.ModelSerializer):
     class Meta:
         model = Card
-        fields = ("card_id_tcg", 
+        fields = ("id",
                   "card_name", 
                   "card_hp", 
                   "card_is_first_edition", 

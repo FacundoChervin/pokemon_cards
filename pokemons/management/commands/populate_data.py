@@ -54,12 +54,11 @@ def load_cards():
     cards_dict = get_cards()
 
     for card in cards_dict:
-        pokemon_id = card["pokemon_id"]
         pokemon_name = card["pokemon_name"]
         pokemon_hp = card["pokemon_hp"]
         is_first_edition = card["is_first_edition"]
         expansion = card["expansion"]
-        types_array = card["types"]
+        type = card["type"]
         rarity = card["rarity"]
         price = card["price"]
         image = card["image"]
@@ -67,12 +66,12 @@ def load_cards():
         creation_date = creation_date.replace("/","-")
         rarity_obj = Rarity.objects.get(rarity_desc=rarity)
         
-        card_obj = Card(card_id_tcg=pokemon_id, 
-                        card_name=pokemon_name,
+        card_obj = Card(card_name=pokemon_name,
                         card_hp=pokemon_hp,
                         card_is_first_edition=is_first_edition,
                         card_expansion=expansion,
                         card_rarity=rarity_obj,
+                        card_type=type,
                         card_price=price,
                         card_image=image,
                         card_creation_date=creation_date,)

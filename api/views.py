@@ -8,8 +8,7 @@ from django_filters.rest_framework import DjangoFilterBackend
 from rest_framework.filters import SearchFilter, OrderingFilter
 import django_filters
 from .serializers import CardSerializer
-
-
+from rest_framework import pagination
 
 
 
@@ -39,12 +38,18 @@ class CardFilter(django_filters.FilterSet):
             
         
 
+class CustomPagination(pagination.PageNumberPagination):
+    page_size = 20
+    page_size_query_param = 'page_size'
+    max_page_size = 100
+    page_query_param = 'page'
 
 
 class CardList(generics.ListAPIView):
     queryset=Card.objects.all()
     serializer_class=CardSerializer
     filterset_class = CardFilter
+    pagination_class = CustomPagination
     filter_backends = [DjangoFilterBackend, SearchFilter, OrderingFilter]
     search_fields = ['card_name', 'card_expansion','card_type','card_rarity']
     ordering_fields = ['card_name', 'card_price', 'id','card_creation_date','card_hp']

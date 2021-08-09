@@ -30,7 +30,6 @@ class Expansion(models.Model):
         return self.expansion_desc
 
 class Card(models.Model):
-    card_id_tcg = models.CharField(max_length=100, null=True, default="NO_TCG")
     card_name = models.CharField(max_length=250)
     card_hp = models.IntegerField()
     card_is_first_edition = models.BooleanField()

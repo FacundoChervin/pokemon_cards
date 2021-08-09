@@ -14,18 +14,18 @@ def get_cards():
     for i in range(min, max):
         cards = requests.get(url+"?page={}".format(i)).json()
         cards_data = cards["data"]
+
         for card in cards_data:
+    
             save = True
-            pokemon_id = card["id"]
             pokemon_name = card["name"]
             has_first_edition = True if "1stEditionHolofoil" in card["tcgplayer"]["prices"] else False
 
             pokemon_hp = card["hp"]
             
             is_first_edition = bool(random.getrandbits(1)) if has_first_edition else False
-            types = card["types"]
             expansion = card["set"]["name"]
-            types = card["types"]
+            type = card["types"][0]
 
             if "rarity" in card:
                 rarity = card["rarity"]
@@ -54,12 +54,11 @@ def get_cards():
             creation_date = card["set"]["releaseDate"]
             if(save):
                 card_object = {
-                    "pokemon_id": pokemon_id,
                     "pokemon_name": pokemon_name,
                     "pokemon_hp": pokemon_hp,
                     "is_first_edition": is_first_edition,
                     "expansion": expansion,
-                    "types": types,
+                    "type": type,
                     "rarity": rarity_to_save,
                     "price": price,
                     "image": image,

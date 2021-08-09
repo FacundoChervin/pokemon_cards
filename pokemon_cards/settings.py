@@ -80,6 +80,12 @@ REST_FRAMEWORK = {
     'DEFAULT_PAGINATION_CLASS': 'rest_framework.pagination.PageNumberPagination',
     'PAGE_SIZE': 20,
     'DEFAULT_FILTER_BACKENDS': ['django_filters.rest_framework.DjangoFilterBackend'],
+        'DEFAULT_RENDERER_CLASSES': (
+        'rest_framework.renderers.JSONRenderer',
+    ),
+    'DEFAULT_PARSER_CLASSES': (
+        'rest_framework.parsers.JSONParser',
+    )
 }
 
 WSGI_APPLICATION = 'pokemon_cards.wsgi.application'
@@ -91,12 +97,14 @@ WSGI_APPLICATION = 'pokemon_cards.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.mysql',
-        # 'NAME': BASE_DIR / 'db.sqlite3',
         'NAME': 'djangodatabase',
         'USER': 'dbadmin',
         'PASSWORD': 'agreepw',
         'HOST': 'localhost',
         'PORT': '3306',
+        'TEST': {
+            'NAME': 'test_djangodatabase',
+        },
     }
 }
 
