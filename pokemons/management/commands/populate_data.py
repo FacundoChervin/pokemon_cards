@@ -43,14 +43,6 @@ def load_constants():
         expansion_obj.save()
     
     for rarity in rarities:
-        # rarity_to_save = "Common"
-        # if rarity == "Common":
-        #     rarity_to_save = "Common"
-        # elif rarity == "Uncommon":
-        #     rarity_to_save = "Uncommon"
-        # elif "rare" in rarity:
-        #     rarity_to_save = "Rare"      
-
         rarity_obj = Rarity(rarity_desc=rarity)
         rarity_obj.save()
         
@@ -86,15 +78,6 @@ def load_cards():
                         card_creation_date=creation_date,)
         try:
             card_obj.save()
-            
-            for type in types_array:
-                type_obj = Type.objects.get(type_desc=type)
-                card_obj.card_type.add(type_obj)
-                try:
-                    card_obj.save(card)
-                except IntegrityError as err:
-                    print("Ignoring unhandled integrity error:")
-                    print(err)
         except IntegrityError as err:
             print("Ignoring unhandled integrity error:")
             print(err)
@@ -107,8 +90,8 @@ class Command(BaseCommand):
     help = 'Populate data to the DB'
     
     def handle(self, *args, **kwargs):
-        load_constants()
-        # load_cards()
+        # load_constants()
+        load_cards()
 
     
 

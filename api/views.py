@@ -4,17 +4,57 @@ from django.views.decorators.csrf import csrf_exempt
 from rest_framework.parsers import JSONParser
 from django.http import HttpResponse, JsonResponse
 from pokemons.models import Card, Rarity, Type, Expansion
-
+from django_filters.rest_framework import DjangoFilterBackend
+from rest_framework.filters import SearchFilter, OrderingFilter
+import django_filters
 from .serializers import CardSerializer
+
+
+
+
+
+class CardFilter(django_filters.FilterSet):
+    card_name = django_filters.CharFilter(lookup_expr='iexact')
+    card_expansion = django_filters.CharFilter(lookup_expr='iexact')
+    card_type = django_filters.CharFilter(lookup_expr='iexact')
+    card_rarity = django_filters.CharFilter(lookup_expr='iexact')
+    card_hp = django_filters.NumberFilter()
+    card_hp__gt = django_filters.NumberFilter(field_name='card_hp', lookup_expr='gt')
+    card_hp__lt = django_filters.NumberFilter(field_name='card_hp', lookup_expr='lt')
+    card_hp__gte = django_filters.NumberFilter(field_name='card_hp', lookup_expr='gte')
+    card_hp__lte = django_filters.NumberFilter(field_name='card_hp', lookup_expr='lte')
+    card_price__gt = django_filters.NumberFilter(field_name='card_price', lookup_expr='gt')
+    card_price__lt = django_filters.NumberFilter(field_name='card_price', lookup_expr='lt')
+    card_price__gte = django_filters.NumberFilter(field_name='card_price', lookup_expr='gte')
+    card_price__lte = django_filters.NumberFilter(field_name='card_price', lookup_expr='lte')
+    card_creation_date__gt = django_filters.DateTimeFilter(field_name='card_creation_date', lookup_expr='gt')
+    card_creation_date__lt = django_filters.DateTimeFilter(field_name='card_creation_date', lookup_expr='lt')
+    card_creation_date__gte = django_filters.DateTimeFilter(field_name='card_creation_date', lookup_expr='gte')
+    card_creation_date__lte = django_filters.DateTimeFilter(field_name='card_creation_date', lookup_expr='lte')
+    card_is_first_edition__eq = django_filters.BooleanFilter(field_name='card_is_first_edition')
+    
+    class Meta:
+        model = Card
+        fields = ['card_name','card_expansion','card_type','card_rarity','card_hp','card_price','card_creation_date','card_is_first_edition']
+            
+        
+
+
+
+class CardList(generics.ListAPIView):
+    queryset=Card.objects.all()
+    serializer_class=CardSerializer
+    filterset_class = CardFilter
+    filter_backends = [DjangoFilterBackend, SearchFilter, OrderingFilter]
+    search_fields = ['card_name', 'card_expansion','card_type','card_rarity']
+    ordering_fields = ['card_name', 'card_price', 'id','card_creation_date','card_hp']
+    ordering = ['id']
+
+    
 
 @csrf_exempt
 def cards_list(request):
-    if request.method == 'GET':
-        cards = Card.objects.all()
-        serializer = CardSerializer(cards, many=True)
-        return JsonResponse(serializer.data, safe=False)
-
-    elif request.method == 'POST':
+    if request.method == 'POST':
 
         data = JSONParser().parse(request)
         serializer = CardSerializer(data=data)

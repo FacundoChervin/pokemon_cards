@@ -10,6 +10,7 @@ mysql = "*"
 mysql-connector-python = "*"
 mysqlclient = "*"
 djangorestframework = "*"
+django-filter = "*"
 
 [dev-packages]
 
